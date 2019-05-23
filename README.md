@@ -2,6 +2,23 @@
 
 <p>Helsingin Bussiliikenteen vuoroaikatauluja xml-muodossa käsitteleviä luokkia.</p>
 
+<h2>Tietojen yleinen rakenne</h2>
+
+<p>Aikataulut ja vuoroaikataulut on järjestetty puumaiseen rakenteeseen.</p>
+<ul>
+  <li>HelbTrafficData on ylin taso.</li>
+  <ul>
+    <li>RouteArray sisältää kaikki aikatauludatan reitit. Jokaisen reitin kumpikin suunta on jaettu omaksi reitikseen. HelBTrafficData sisältää vain yhden RouteArrayn.</li>
+    <ul>
+      <li>Route sisältää yhden reitin aikatauludatan. Data on jaettu neljään aikataulutaulukkoon, jokaiselle päivätyypille omansa.</li>
+      <ul>
+        <li>TripTable, joita on Routen sisällä neljä, sisältää varsinaisen aikatauludatan.</li>
+        <li>StopOfARoute, joita on Routen sisällä tarvittava määrä, sisältävät tiedon reitin pysäkeistä.</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
 <h2>Reittitunnuksista</h2>
 
 <p>HSL:n reittitunnukset ovat merkkijonoja, jotka koostuvat 4-6 merkistä:</p>
@@ -33,4 +50,6 @@
 <ul>
   <li>XmlHelper: Staattisten metodien poistaminen luokasta. Vaatii paljon muutoksia myös muuhun koodiin.</li>
   <li>TripTable: Mitä tapahtuu, jos luetaan aika aikataulutaulukon ulkopuolelta?</li>
+  <li>Route: DAY_TYPES pois</li>
+  <li>Route: Luokka käyttämään DayType-luokan palveluita.</li>
 </ul>
