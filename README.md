@@ -8,12 +8,20 @@
 <ul>
   <li>HelbTrafficData on ylin taso.</li>
   <ul>
-    <li>RouteArray sisältää kaikki aikatauludatan reitit. Jokaisen reitin kumpikin suunta on jaettu omaksi reitikseen. HelBTrafficData sisältää vain yhden RouteArrayn.</li>
+    <li>RouteArray sisältää varsinaisen HSL:ltä saatavan aikatauludatan. Jokaisen linjan kumpikin suunta on jaettu omaksi reitikseen. HelBTrafficData sisältää vain yhden RouteArrayn.</li>
     <ul>
       <li>Route sisältää yhden reitin aikatauludatan. Data on jaettu neljään aikataulutaulukkoon, jokaiselle päivätyypille omansa.</li>
       <ul>
         <li>TripTable, joita on Routen sisällä neljä, sisältää varsinaisen aikatauludatan.</li>
         <li>StopOfARoute, joita on Routen sisällä tarvittava määrä, sisältävät tiedon reitin pysäkeistä.</li>
+      </ul>
+    </ul>
+    <li>DiagramArray sisältää Helsingin bussiliikenteen vuoroaikataulut, siis kunkin bussin työpäivät. DiagramArray-objekteja on HelbTrafficDatan sisällä neljä, yksi kullekin päivätyypille.</li>
+    <ul>
+      <li>Diagram sisältää yhden vuoroaikataulun.</li>
+      <ul>
+        <li>DeadheadOfADiagram sisältää yhden tyhjänäajosivun.</li>
+        <li>TripOfADiagram sisältää viittauksen yhteen aikatauludatan linjasivuun.</li>
       </ul>
     </ul>
   </ul>
