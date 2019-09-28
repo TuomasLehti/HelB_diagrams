@@ -17,11 +17,16 @@ import org.xmlpull.v1.XmlSerializer;
  * ja tarvittaessa tuhannet tunnin. Esimerkiksi puolipäivä merkitään 1200 ja 
  * varttia yli yhdeksän 945.</p>
  *
- * <p>Toistaiseksi aikataulujen päivätyyppi täytyy merkitä kokonaisluvulla, eli
- * 0 = ma, 1 = pe, 2 = la, 3 = su. Tähän tullee muutos jatkossa.</p>
+ * <p>Tietojen asettamiseen ja hakuun liittyvät metodit ovat saatavana kahtena
+ * eri versiona. Voidaan käyttää päivätyypin merkitsemiseen joko DayType-luokkaa
+ * tai vanhan tyylin mukaisesti kokonaislukua, eli 0 = ma, 1 = pe, 2 = la, 
+ * 3 = su. Tähän tullee muutos jatkossa.</p>
+ *
+ * <p>Sisäisesti päivätyyppi käsitellään vielä kokonaislukuna. Tämä muuttunee
+ * seuraavan, suuremman refaktoroinnin yhteydessä.</p>
  *
  * @author Tuomas Lehti
- * @version 2019-03-13
+ * @version 2019-09-29
  */
 public class Route //implements Comparable<Route>
 {
@@ -77,7 +82,19 @@ public class Route //implements Comparable<Route>
         TripTable timetable = timetables.get(dayType);
         timetable.setTime(tripIdx, stopIdx, time);
     }
-    
+
+    /**
+     * Asettaa ajan aikataulutaulukkoon.
+     * @param dayType Päivätyyppi.
+     * @param tripIdx Linjasivun järjestysnumero 0 -> n-1.
+     * @param stopIdx Pysäkin järjestysnumero 0 -> n-1.
+     * @param time Asetettava aika, tunnit satoina, minuutit ykkösinä.
+     */
+    public void setTime(DayType dayType, int tripIdx, int stopIdx, short time) {
+        TripTable timetable = timetables.get(dayType.getI());
+        timetable.setTime(tripIdx, stopIdx, time);
+    }
+
     /**
      * Lukee ajan aikataulutaulukosta.
      * @param dayType Päivätyyppi. 0 = ma, 1 = pe, 2 = la, 3 = su.
@@ -87,6 +104,18 @@ public class Route //implements Comparable<Route>
      */
     public short getTime(int dayType, int tripIdx, int stopIdx) {
         TripTable timetable = timetables.get(dayType);
+        return timetable.getTime(tripIdx, stopIdx);
+    }
+
+    /**
+     * Lukee ajan aikataulutaulukosta.
+     * @param dayType Päivätyyppi.
+     * @param tripIdx Linjasivun järjestysnumero 0 -> n-1.
+     * @param stopIdx Pysäkin järjestysnumero 0 -> n-1.
+     * @return Haluttu aika.
+     */
+    public short getTime(DayType dayType, int tripIdx, int stopIdx) {
+        TripTable timetable = timetables.get(dayType.getI());
         return timetable.getTime(tripIdx, stopIdx);
     }
     
@@ -102,6 +131,36 @@ public class Route //implements Comparable<Route>
     public int searchTrip(int dayType, int stopIdx, short time) {
         TripTable timetable = timetables.get(dayType);
         return timetable.searchTrip(stopIdx, time);
+    }
+
+    /**
+     * <p>Etsii ajan aikataulutaulukosta.</p>
+     * <p>Etsii aikaa tietyn pysäkin kohdalta. Palauttaa sen linjasivun
+     * järjestysnumeron, jolla haluttu aika esiintyy ensimmäisen kerran.</p>
+     * @param dayType Päivätyyppi. 0 = ma, 1 = pe, 2 = la, 3 = su.
+     * @param stopIdx Pysäkin järjestysnumero 0 -> n-1.
+     * @param time Etsittävä aika, tunnit satoina, minuutit ykkösinä.
+     * @return Linjasivun järjestysnumero.
+     */
+    public int searchTrip(DayType dayType, int stopIdx, short time) {
+        TripTable timetable = timetables.get(dayType.getI());
+        return timetable.searchTrip(stopIdx, time);
+    }
+    
+    /** 
+    * <p>Lajittelee tietyn päivän lähdöt ensimmäisen pysäkin lähtöajan mukaan.</p>
+    * @param dayType Päivätyyppi. 0 = ma, 1 = pe, 2 = la, 3 = su.
+    */
+    public void sortTrips(int dayType) {
+    	timetables.get(dayType).sortTrips();
+    }
+
+    /** 
+    * <p>Lajittelee tietyn päivän lähdöt ensimmäisen pysäkin lähtöajan mukaan.</p>
+    * @param dayType Päivätyyppi. 0 = ma, 1 = pe, 2 = la, 3 = su.
+    */
+    public void sortTrips(DayType dayType) {
+    	timetables.get(dayType.getI()).sortTrips();
     }
     
     /**
@@ -144,6 +203,15 @@ public class Route //implements Comparable<Route>
      */ 
     public int getNumOfTrips(int dayType) {
         return timetables.get(dayType).getNumOfTrips();
+    }
+
+    /** 
+     * Palauttaa tietyn päivätyypin linjasivujen määrän.
+     * @param dayType Päivätyyppi.
+     * @return Linjasivujen määrä.
+     */ 
+    public int getNumOfTrips(DayType dayType) {
+        return timetables.get(dayType.getI()).getNumOfTrips();
     }
     
     /** 
@@ -289,4 +357,8 @@ public class Route //implements Comparable<Route>
 * TODO:
 * -- DAY_TYPES pois
 * -- Luokka käyttämään DayType-luokan palveluita.
+*
+* muutokset:
+* 2019-06-16: lisätty sortTrips.
+* 2019-09-28: Lisätty metodit, jotka käyttävät DayType-luokan palveluita.
 */
