@@ -59,5 +59,5 @@
   <li>XmlHelper: Staattisten metodien poistaminen luokasta. Vaatii paljon muutoksia myös muuhun koodiin.</li>
   <li>TripTable: Mitä tapahtuu, jos luetaan aika aikataulutaulukon ulkopuolelta?</li>
   <li>Route: DAY_TYPES pois</li>
-  <li>Route: Luokka käyttämään DayType-luokan palveluita.</li>
+  <li>Route: Siirtyminen sisäisesti DayType-luokan palvelujen pariin.</li>
 </ul>
