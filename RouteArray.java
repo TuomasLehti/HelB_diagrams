@@ -12,7 +12,7 @@ import org.xmlpull.v1.XmlSerializer;
  * <p>RouteArray sisältää HSL:n aikatauludataa.</p>
  * 
  * @author Tuomas Lehti
- * @version 2019-05-23
+ * @version 2019-09-28
  */
 
 public class RouteArray
@@ -67,10 +67,20 @@ public class RouteArray
 
     /**
      * Kertoo, sisältääkö reittilista tietyn reitin.
+     * @param idAndDir Etsittävä reitti.
      * @return Tieto, onko reitti listassa. 
      */
     public boolean hasRoute(String idAndDir) {
         return routes.containsKey(new RouteIdAndDir(idAndDir));
+    }
+
+    /**
+     * Kertoo, sisältääkö reittilista tietyn reitin.
+     * @param idAndDir Etsittävä reitti.
+     * @return Tieto, onko reitti listassa. 
+     */
+    public boolean hasRoute(RouteIdAndDir idAndDir) {
+        return routes.containsKey(idAndDir);
     }
     
     /**
@@ -121,3 +131,9 @@ public class RouteArray
     
 
 }
+
+/**
+Muutokset:
+
+2019-09-28: RouteIdAndDir-luokkaa käyttävä versio hasRoute-metodista.
+*/
